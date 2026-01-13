@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Você ainda me ama?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .heart {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body class="h-full bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 flex items-center justify-center p-4">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    
+    <!-- Tela inicial -->
+    <div id="telaInicial" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center fade-in">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-8 leading-tight">
+            Você ainda me ama?
+        </h1>
+        
+        <div class="space-y-4">
+            <button onclick="responderSim()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 hover:scale-105">
+                Sim
+            </button>
+            
+            <button onclick="responderNao()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 hover:scale-105">
+                Não
+            </button>
+        </div>
+    </div>
+    
+    <!-- Tela de resposta "Não" -->
+    <div id="telaNao" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center hidden">
+        <p class="text-xl text-gray-600">Fim</p>
+    </div>
+    
+    <!-- Tela de resposta "Sim" -->
+    <div id="telaSim" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center hidden">
+        <h1 class="text-2xl md:text-3xl font-bold text-pink-600 mb-8 leading-tight">
+            Eu também te amo!
+        </h1>
+        
+        <button onclick="avancar()" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-2xl transition-all duration-300 hover:scale-105">
+            Avançar
+        </button>
+    </div>
+    
+    <!-- Tela do pedido de namoro -->
+    <div id="telaNamoro" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center hidden">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-8 leading-tight">
+            Você aceita namorar comigo?
+        </h1>
+        
+        <div class="space-y-4">
+            <button onclick="aceitarNamoro()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 hover:scale-105">
+                Sim
+            </button>
+            
+            <button onclick="recusarNamoro()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 hover:scale-105">
+                Não
+            </button>
+        </div>
+    </div>
+    
+    <!-- Tela de aceite do namoro -->
+    <div id="telaAceite" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center hidden">
+        <p class="text-lg text-gray-700 italic mb-6">O meu sim você sempre teve!</p>
+        
+        <button onclick="avancarParaNoite()" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-2xl transition-all duration-300 hover:scale-105">
+            Avançar
+        </button>
+    </div>
+    
+    <!-- Tela da noite especial -->
+    <div id="telaNoite" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center hidden">
+        <p class="text-lg text-gray-700 leading-relaxed">Teremos uma noite muito especial, com carinho, afeto e com a expectativa que possamos conversar e superar nossas diferenças.</p>
+    </div>
+    
+    <!-- Tela de recusa do namoro -->
+    <div id="telaRecusa" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center hidden">
+        <p class="text-xl text-gray-600">Entendo... Talvez no futuro.</p>
+    </div>
+
+    <script>
+        function responderSim() {
+            document.getElementById('telaInicial').classList.add('hidden');
+            document.getElementById('telaSim').classList.remove('hidden');
+            document.getElementById('telaSim').classList.add('fade-in');
+        }
+        
+        function responderNao() {
+            document.getElementById('telaInicial').classList.add('hidden');
+            document.getElementById('telaNao').classList.remove('hidden');
+            document.getElementById('telaNao').classList.add('fade-in');
+        }
+        
+        function avancar() {
+            document.getElementById('telaSim').classList.add('hidden');
+            document.getElementById('telaNamoro').classList.remove('hidden');
+            document.getElementById('telaNamoro').classList.add('fade-in');
+        }
+        
+        function aceitarNamoro() {
+            document.getElementById('telaNamoro').classList.add('hidden');
+            document.getElementById('telaAceite').classList.remove('hidden');
+            document.getElementById('telaAceite').classList.add('fade-in');
+        }
+        
+        function recusarNamoro() {
+            document.getElementById('telaNamoro').classList.add('hidden');
+            document.getElementById('telaRecusa').classList.remove('hidden');
+            document.getElementById('telaRecusa').classList.add('fade-in');
+        }
+        
+        function avancarParaNoite() {
+            document.getElementById('telaAceite').classList.add('hidden');
+            document.getElementById('telaNoite').classList.remove('hidden');
+            document.getElementById('telaNoite').classList.add('fade-in');
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98b9d754b3e07a2f',t:'MTc1OTk3MDU3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
