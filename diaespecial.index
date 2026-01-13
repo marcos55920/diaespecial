@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Você ainda me ama?</title>
+    <!-- Tailwind via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
         body {
             box-sizing: border-box;
@@ -38,16 +40,16 @@
             40% { transform: translateY(-10px); }
             60% { transform: translateY(-5px); }
         }
-    </style>
-</head>
-<body class="h-full bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 flex items-center justify-center p-4">
-    <style>
+
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
         }
     </style>
+</head>
+
+<body class="h-full bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 flex items-center justify-center p-4">
     
     <!-- Tela inicial -->
     <div id="telaInicial" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center fade-in">
@@ -110,7 +112,9 @@
     
     <!-- Tela da noite especial -->
     <div id="telaNoite" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center hidden">
-        <p class="text-lg text-gray-700 leading-relaxed">Teremos uma noite muito especial, com carinho, afeto e com a expectativa que possamos conversar e superar nossas diferenças.</p>
+        <p class="text-lg text-gray-700 leading-relaxed">
+            Teremos uma noite muito especial, com carinho, afeto e com a expectativa que possamos conversar e superar nossas diferenças.
+        </p>
     </div>
     
     <!-- Tela de recusa do namoro -->
@@ -119,41 +123,36 @@
     </div>
 
     <script>
+        function trocarTela(esconderId, mostrarId) {
+            document.getElementById(esconderId).classList.add('hidden');
+            const mostrar = document.getElementById(mostrarId);
+            mostrar.classList.remove('hidden');
+            mostrar.classList.add('fade-in');
+        }
+
         function responderSim() {
-            document.getElementById('telaInicial').classList.add('hidden');
-            document.getElementById('telaSim').classList.remove('hidden');
-            document.getElementById('telaSim').classList.add('fade-in');
+            trocarTela('telaInicial', 'telaSim');
         }
         
         function responderNao() {
-            document.getElementById('telaInicial').classList.add('hidden');
-            document.getElementById('telaNao').classList.remove('hidden');
-            document.getElementById('telaNao').classList.add('fade-in');
+            trocarTela('telaInicial', 'telaNao');
         }
         
         function avancar() {
-            document.getElementById('telaSim').classList.add('hidden');
-            document.getElementById('telaNamoro').classList.remove('hidden');
-            document.getElementById('telaNamoro').classList.add('fade-in');
+            trocarTela('telaSim', 'telaNamoro');
         }
         
         function aceitarNamoro() {
-            document.getElementById('telaNamoro').classList.add('hidden');
-            document.getElementById('telaAceite').classList.remove('hidden');
-            document.getElementById('telaAceite').classList.add('fade-in');
+            trocarTela('telaNamoro', 'telaAceite');
         }
         
         function recusarNamoro() {
-            document.getElementById('telaNamoro').classList.add('hidden');
-            document.getElementById('telaRecusa').classList.remove('hidden');
-            document.getElementById('telaRecusa').classList.add('fade-in');
+            trocarTela('telaNamoro', 'telaRecusa');
         }
         
         function avancarParaNoite() {
-            document.getElementById('telaAceite').classList.add('hidden');
-            document.getElementById('telaNoite').classList.remove('hidden');
-            document.getElementById('telaNoite').classList.add('fade-in');
+            trocarTela('telaAceite', 'telaNoite');
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98b9d754b3e07a2f',t:'MTc1OTk3MDU3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
