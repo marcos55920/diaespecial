@@ -1,158 +1,486 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Você ainda me ama?</title>
-    <!-- Tailwind via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faraó Egípcio - Números Egípcios</title>
+  <meta name="description" content="Jogo educativo para praticar sistema de numeração egípcio. De 1 a 7 dígitos com hieróglifos autênticos.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset e base */
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
 
-    <style>
-        body {
-            box-sizing: border-box;
-        }
-        
-        .heart {
-            animation: heartbeat 1.5s ease-in-out infinite;
-        }
-        
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.8s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .bounce {
-            animation: bounce 2s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
+    body {
+      font-family: 'Cinzel', serif;
+      background: linear-gradient(135deg, #FFEB99 0%, #F4A261 30%, #E76F51 70%, #D4A261 100%);
+      min-height: 100vh;
+      color: #2C1810;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      touch-action: manipulation;
+    }
+
+    /* Container principal - GitHub Pages ready */
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      max-width: 100%;
+    }
+
+    #card {
+      background: rgba(255,248,220,0.98);
+      backdrop-filter: blur(10px);
+      border: 4px solid #D4AF37;
+      border-radius: 24px;
+      padding: clamp(20px, 5vw, 28px);
+      max-width: 480px;
+      width: 95vw;
+      max-width: 95%;
+      box-shadow: 
+        0 20px 40px rgba(212,175,55,0.4),
+        0 0 0 1px rgba(255,255,255,0.3);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(15px, 4vw, 20px);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    #card:hover {
+      box-shadow: 
+        0 25px 50px rgba(212,175,55,0.5),
+        0 0 0 1px rgba(255,255,255,0.4);
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 8vw, 3rem);
+      background: linear-gradient(45deg, #FFD700, #D4AF37, #B8860B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+
+    .level {
+      background: linear-gradient(90deg, #FF6B35, #F7931E);
+      color: white;
+      padding: clamp(6px, 2vw, 10px) clamp(12px, 3vw, 18px);
+      border-radius: 20px;
+      font-size: clamp(0.95rem, 3vw, 1.1rem);
+      font-weight: 700;
+      align-self: flex-start;
+      box-shadow: 0 4px 12px rgba(255,107,53,0.4);
+    }
+
+    .symbols {
+      font-size: clamp(42px, 16vw, 72px);
+      padding: clamp(18px, 4vw, 24px);
+      background: rgba(255,255,255,0.92);
+      border: 3px solid #D4AF37;
+      border-radius: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(8px, 2vw, 14px);
+      min-height: clamp(90px, 22vw, 120px);
+      box-shadow: 
+        0 8px 24px rgba(0,0,0,0.2),
+        inset 0 2px 4px rgba(255,255,255,0.8);
+    }
+
+    .symbol {
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: pointer;
+      padding: clamp(4px, 1vw, 8px);
+      border-radius: 10px;
+      position: relative;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    .symbol:hover {
+      transform: scale(1.15);
+      box-shadow: 0 4px 16px rgba(255,215,0,0.6);
+    }
+
+    /* EFEITO TOCAR/CLICAR - Mobile + Desktop */
+    .symbol:active,
+    .symbol.touched {
+      transform: scale(1.35) !important;
+      background: linear-gradient(45deg, #FFD700, #FFA500) !important;
+      box-shadow: 
+        0 0 30px rgba(255,215,0,0.9),
+        0 8px 25px rgba(212,175,55,0.7),
+        inset 0 2px 6px rgba(255,255,255,0.5) !important;
+      animation: symbolGlow 0.5s ease-out;
+    }
+
+    @keyframes symbolGlow {
+      0% {
+        box-shadow: 
+          0 0 30px rgba(255,215,0,0.9),
+          0 8px 25px rgba(212,175,55,0.7);
+        transform: scale(1.35);
+      }
+      50% {
+        transform: scale(1.45);
+        box-shadow: 
+          0 0 50px rgba(255,215,0,1),
+          0 12px 35px rgba(212,175,55,0.9);
+      }
+      100% {
+        transform: scale(1.35);
+      }
+    }
+
+    .question-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(12px, 3vw, 18px);
+    }
+
+    .question-text {
+      font-size: clamp(1.2rem, 4.5vw, 1.6rem);
+      font-weight: 700;
+      color: #8B4513;
+      margin: 0;
+      text-shadow: 1px 1px 3px rgba(255,255,255,0.9);
+      letter-spacing: 0.5px;
+    }
+
+    #decimalInput {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(24px, 8vw, 36px);
+      padding: clamp(16px, 4vw, 22px) clamp(28px, 6vw, 40px);
+      /* CAIXA LARGA - ocupa toda largura disponível */
+      width: 100%;
+      border: 3px solid #D4AF37;
+      border-radius: 14px;
+      text-align: center;
+      background: linear-gradient(145deg, #FFFFFF, #F8F8F8);
+      font-weight: 700;
+      box-shadow: 
+        0 6px 18px rgba(212,175,55,0.3),
+        inset 0 2px 4px rgba(255,255,255,0.8);
+      line-height: 1.1;
+      transition: all 0.3s ease;
+      min-height: 60px;
+    }
+
+    #decimalInput:focus {
+      outline: none;
+      border-color: #FFD700;
+      box-shadow: 
+        0 0 25px rgba(255,215,0,0.6),
+        0 8px 20px rgba(212,175,55,0.4);
+      transform: scale(1.02);
+    }
+
+    #decimalInput::placeholder {
+      color: #D4AF37;
+      font-weight: 400;
+      letter-spacing: 1px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: clamp(8px, 2vw, 12px);
+      justify-content: center;
+      width: 100%;
+    }
+
+    button {
+      flex: 1;
+      min-width: clamp(90px, 22vw, 110px);
+      padding: clamp(12px, 3vw, 16px) clamp(16px, 4vw, 22px);
+      border: 2px solid #D4AF37;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #FFD700, #FFA500);
+      color: #2C1810;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: clamp(0.9rem, 3vw, 1.05rem);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      user-select: none;
+      touch-action: manipulation;
+    }
+
+    button:hover,
+    button:focus {
+      background: linear-gradient(145deg, #FFA500, #FF8C00);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(212,175,55,0.5);
+    }
+
+    button:active {
+      transform: translateY(-1px);
+    }
+
+    #feedback {
+      font-size: clamp(1.1rem, 4vw, 1.6rem);
+      font-weight: 900;
+      padding: clamp(14px, 3.5vw, 20px);
+      border-radius: 12px;
+      min-height: clamp(45px, 10vh, 60px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: auto;
+      letter-spacing: 0.5px;
+    }
+
+    .correct { 
+      background: linear-gradient(145deg, #90EE90, #32CD32);
+      color: #006400;
+      box-shadow: 0 6px 20px rgba(50,205,50,0.4);
+      animation: celebrate 0.6s ease-out;
+    }
+
+    .wrong { 
+      background: linear-gradient(145deg, #FFB6C1, #FF69B4);
+      color: #8B0000;
+      box-shadow: 0 6px 20px rgba(255,105,180,0.4);
+      animation: shake 0.4s ease-out;
+    }
+
+    @keyframes celebrate {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+
+    .score {
+      position: absolute;
+      top: clamp(12px, 3vw, 18px);
+      right: clamp(12px, 3vw, 18px);
+      background: linear-gradient(145deg, #FFD700, #FFA500);
+      color: #2C1810;
+      padding: clamp(10px, 2.5vw, 14px) clamp(14px, 3.5vw, 18px);
+      border-radius: 22px;
+      font-weight: 700;
+      font-size: clamp(0.95rem, 3vw, 1.1rem);
+      box-shadow: 0 8px 20px rgba(212,175,55,0.5);
+      border: 2px solid #D4AF37;
+      z-index: 10;
+      min-width: clamp(100px, 20vw, 140px);
+    }
+
+    /* RESPONSIVIDADE MOBILE PERFEITA */
+    @media (max-width: 480px) {
+      .container { padding: 15px; }
+      #card { 
+        padding: clamp(18px, 6vw, 24px); 
+        gap: clamp(12px, 3.5vw, 18px);
+        border-radius: 20px;
+      }
+      .btn-row { gap: clamp(6px, 2.5vw, 10px); }
+      button { 
+        padding: clamp(12px, 4vw, 16px) clamp(14px, 5vw, 20px);
+        min-height: 54px;
+      }
+      .symbols { 
+        gap: clamp(6px, 2vw, 10px);
+        padding: clamp(16px, 5vw, 22px);
+      }
+      #decimalInput { 
+        padding: clamp(16px, 5vw, 22px) clamp(20px, 8vw, 32px);
+        min-height: 64px;
+        font-size: clamp(22px, 9vw, 32px);
+      }
+    }
+
+    @media (max-width: 360px) {
+      .symbols { font-size: clamp(38px, 18vw, 60px); }
+      #decimalInput { font-size: clamp(20px, 10vw, 28px); }
+    }
+
+    /* Performance mobile */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
 </head>
-
-<body class="h-full bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 flex items-center justify-center p-4">
-    
-    <!-- Tela inicial -->
-    <div id="telaInicial" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center fade-in">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-8 leading-tight">
-            Você ainda me ama?
-        </h1>
-        
-        <div class="space-y-4">
-            <button onclick="responderSim()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 hover:scale-105">
-                Sim
-            </button>
-            
-            <button onclick="responderNao()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 hover:scale-105">
-                Não
-            </button>
-        </div>
-    </div>
-    
-    <!-- Tela de resposta "Não" -->
-    <div id="telaNao" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center hidden">
-        <p class="text-xl text-gray-600">Fim</p>
-    </div>
-    
-    <!-- Tela de resposta "Sim" -->
-    <div id="telaSim" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center hidden">
-        <h1 class="text-2xl md:text-3xl font-bold text-pink-600 mb-8 leading-tight">
-            Eu também te amo!
-        </h1>
-        
-        <button onclick="avancar()" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-2xl transition-all duration-300 hover:scale-105">
-            Avançar
-        </button>
-    </div>
-    
-    <!-- Tela do pedido de namoro -->
-    <div id="telaNamoro" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center hidden">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-8 leading-tight">
-            Você aceita namorar comigo?
-        </h1>
-        
-        <div class="space-y-4">
-            <button onclick="aceitarNamoro()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 hover:scale-105">
-                Sim
-            </button>
-            
-            <button onclick="recusarNamoro()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 hover:scale-105">
-                Não
-            </button>
-        </div>
-    </div>
-    
-    <!-- Tela de aceite do namoro -->
-    <div id="telaAceite" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center hidden">
-        <p class="text-lg text-gray-700 italic mb-6">O meu sim você sempre teve!</p>
-        
-        <button onclick="avancarParaNoite()" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-2xl transition-all duration-300 hover:scale-105">
-            Avançar
-        </button>
-    </div>
-    
-    <!-- Tela da noite especial -->
-    <div id="telaNoite" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center hidden">
-        <p class="text-lg text-gray-700 leading-relaxed">
-            Teremos uma noite muito especial, com carinho, afeto e com a expectativa que possamos conversar e superar nossas diferenças.
-        </p>
-    </div>
-    
-    <!-- Tela de recusa do namoro -->
-    <div id="telaRecusa" class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md w-full text-center hidden">
-        <p class="text-xl text-gray-600">Entendo... Talvez no futuro.</p>
+<body>
+  <div class="container">
+    <div class="score">
+      🏆 <span id="score">0</span>/<span id="total">0</span>
     </div>
 
-    <script>
-        function trocarTela(esconderId, mostrarId) {
-            document.getElementById(esconderId).classList.add('hidden');
-            const mostrar = document.getElementById(mostrarId);
-            mostrar.classList.remove('hidden');
-            mostrar.classList.add('fade-in');
-        }
+    <div id="card">
+      <h1>𓀀 Faraó 🏺</h1>
+      
+      <div class="level" id="levelInfo">1 dígito (1-9)</div>
 
-        function responderSim() {
-            trocarTela('telaInicial', 'telaSim');
+      <div class="symbols" id="symbolsDisplay"></div>
+
+      <div class="question-row">
+        <p class="question-text">Qual o valor?</p>
+        <input type="number" id="decimalInput" placeholder="Digite aqui..." autocomplete="off">
+      </div>
+
+      <div class="btn-row">
+        <button id="checkBtn">✅ Verificar</button>
+        <button id="newBtn">🔄 Novo</button>
+      </div>
+
+      <div id="feedback"></div>
+    </div>
+  </div>
+
+  <script>
+    // Símbolos egípcios autênticos Unicode
+    const egyptianSymbols = [
+      { value: 1000000, char: '𓁨' },
+      { value: 100000, char: '𓆐' },
+      { value: 10000, char: '𓂭' },
+      { value: 1000, char: '𓆼' },
+      { value: 100, char: '𓍢' },
+      { value: 10, char: '𓎆' },
+      { value: 1, char: '𓏺' }
+    ];
+
+    let questionSequence = [];
+    let currentIndex = 0;
+    let score = 0;
+    let totalQuestions = 0;
+    let awaitingNew = false;
+    let targetValue = 0;
+    let currentSymbols = [];
+
+    // Gera sequência didática: 5 perguntas por #dígitos
+    function generateSequence() {
+      questionSequence = [];
+      
+      for (let digits = 1; digits <= 7; digits++) {
+        for (let i = 0; i < 5; i++) {
+          const minVal = digits === 1 ? 1 : Math.pow(10, digits-1);
+          const maxVal = Math.pow(10, digits) - 1;
+          const target = Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
+          questionSequence.push({ target, digits });
         }
-        
-        function responderNao() {
-            trocarTela('telaInicial', 'telaNao');
+      }
+      
+      questionSequence.sort(() => Math.random() - 0.5);
+      currentIndex = 0;
+    }
+
+    function generateEgyptian(target) {
+      let remaining = target;
+      let symbols = [];
+      
+      for (let sym of egyptianSymbols) {
+        const count = Math.floor(remaining / sym.value);
+        for (let i = 0; i < count; i++) {
+          symbols.push(sym);
         }
-        
-        function avancar() {
-            trocarTela('telaSim', 'telaNamoro');
-        }
-        
-        function aceitarNamoro() {
-            trocarTela('telaNamoro', 'telaAceite');
-        }
-        
-        function recusarNamoro() {
-            trocarTela('telaNamoro', 'telaRecusa');
-        }
-        
-        function avancarParaNoite() {
-            trocarTela('telaAceite', 'telaNoite');
-        }
-    </script>
+        remaining %= sym.value;
+        if (remaining === 0) break;
+      }
+      
+      return symbols;
+    }
+
+    function showCurrentQuestion() {
+      if (currentIndex >= questionSequence.length) {
+        generateSequence();
+      }
+      
+      const q = questionSequence[currentIndex];
+      currentSymbols = generateEgyptian(q.target);
+      targetValue = q.target;
+      
+      document.getElementById('levelInfo').textContent = 
+        `${q.digits} dígito${q.digits > 1 ? 's' : ''}`;
+      
+      document.getElementById('decimalInput').value = '';
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('feedback').className = '';
+      
+      const shuffled = [...currentSymbols].sort(() => Math.random() - 0.5);
+      document.getElementById('symbolsDisplay').innerHTML = 
+        shuffled.map(s => `<span class="symbol" title="Valor: ${s.value}">${s.char}</span>`).join('');
+      
+      document.getElementById('decimalInput').focus();
+      awaitingNew = false;
+      document.getElementById('checkBtn').textContent = '✅ Verificar';
+    }
+
+    // Touch/Click handler para símbolos
+    document.getElementById('symbolsDisplay').addEventListener('click', (e) => {
+      if (e.target.classList.contains('symbol')) {
+        e.target.classList.add('touched');
+        setTimeout(() => e.target.classList.remove('touched'), 500);
+      }
+    });
+
+    document.getElementById('checkBtn').addEventListener('click', () => {
+      if (awaitingNew) {
+        currentIndex++;
+        showCurrentQuestion();
+        return;
+      }
+      
+      const input = parseInt(document.getElementById('decimalInput').value) || 0;
+      const fb = document.getElementById('feedback');
+      
+      totalQuestions++;
+      
+      if (input === targetValue) {
+        score++;
+        fb.innerHTML = `✅ <strong>FARAÓ GENIAL!</strong>`;
+        fb.className = 'correct';
+      } else {
+        fb.innerHTML = `❌ <strong>É ${targetValue.toLocaleString()}</strong>`;
+        fb.className = 'wrong';
+      }
+      
+      document.getElementById('score').textContent = score;
+      document.getElementById('total').textContent = totalQuestions;
+      
+      awaitingNew = true;
+      document.getElementById('checkBtn').textContent = '🔄 PRÓXIMO';
+    });
+
+    document.getElementById('newBtn').addEventListener('click', () => {
+      currentIndex++;
+      showCurrentQuestion();
+    });
+
+    document.getElementById('decimalInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        document.getElementById('checkBtn').click();
+      }
+    });
+
+    // Inicialização
+    generateSequence();
+    showCurrentQuestion();
+  </script>
 </body>
 </html>
